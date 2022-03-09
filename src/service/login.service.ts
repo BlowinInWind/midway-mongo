@@ -1,4 +1,4 @@
-import { Provide, Inject } from '@midwayjs/decorator';
+import { Provide, Inject, Scope, ScopeEnum } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from './user.service';
 import { Utils } from '../common/utils/index';
@@ -16,7 +16,10 @@ export class LoginService {
   @Inject()
   redisService: RedisService;
 
-  async login(loginDto: any, ctx: Context) {
+  @Inject()
+  ctx: Context;
+
+  async login(loginDto: any) {
     const result = await this.userService.findUserByNameAndPasswd(
       loginDto.username,
       loginDto.passwd
@@ -28,7 +31,7 @@ export class LoginService {
 
     const token = await this.utils.jwtSign(
       {
-        uid: parseInt(result!._id.toString()),
+        uid: result!._id.toString(),
         pv: 1,
       },
       {
@@ -36,7 +39,6 @@ export class LoginService {
       }
     );
 
-    console.log(result._id);
     await this.redisService.set(
       `admin:token:${result._id}`,
       token,
@@ -44,9 +46,7 @@ export class LoginService {
       60 * 60 * 24
     );
 
-    ctx.set('userId', loginDto.username);
-
-    // ctx.state.user.id = loginDto.username;
+    this.ctx.admin = result;
 
     return { token };
   }

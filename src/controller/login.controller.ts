@@ -8,12 +8,9 @@ export class LoginController {
   @Inject()
   loginService: LoginService;
 
-  @Inject()
-  ctx: Context;
-
   @Post('/')
   async login(@Body() loginDto: any) {
-    const result = await this.loginService.login(loginDto, this.ctx);
+    const result = await this.loginService.login(loginDto);
     return DataObj.create(result);
   }
 }

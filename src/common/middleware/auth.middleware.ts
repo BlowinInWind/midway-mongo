@@ -1,23 +1,56 @@
 import { IMiddleware } from '@midwayjs/core';
-import { Middleware, listModule, getClassMetadata } from '@midwayjs/decorator';
+import {
+  Middleware,
+  listModule,
+  getClassMetadata,
+  Inject,
+} from '@midwayjs/decorator';
 import { NextFunction, Context } from '@midwayjs/koa';
-import { AjaxResult } from '../class';
-import { PUBLIC_KEY } from '../constants';
+import { RedisService } from '@midwayjs/redis';
+import { Utils } from '../utils';
 
 @Middleware()
 export class AuthMiddleware implements IMiddleware<Context, NextFunction> {
+  @Inject()
+  utils: Utils;
+
+  @Inject()
+  redisService: RedisService;
+
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
-      const modules = listModule(PUBLIC_KEY);
-      for (const mod of modules) {
-        console.log(mod);
-        const assa = getClassMetadata(PUBLIC_KEY, mod);
-        console.log(assa);
-        // 实现自定义能力
-        // 比如，拿元数据 getClassMetadata(mod)
-        // 比如，提前初始化 app.applicationContext.getAsync(mod);
+      const url = ctx.url;
+      if (url !== '/login') {
+        const token = ctx.get('Authorization').slice(7);
+        if (!token) {
+          ctx.status = 401;
+          ctx.body = {
+            code: 200,
+            message: '无权限',
+          };
+          return;
+        } else {
+          const result = await this.utils.jwtVerify(token);
+
+          const redisToken = await this.redisService.get(
+            `admin:token:${result.uid}`
+          );
+
+          if (token === redisToken) {
+            ctx.adminId = result.uid;
+            await next();
+            return;
+          } else {
+            ctx.status = 401;
+            ctx.body = {
+              code: 200,
+              message: '无权限',
+            };
+            return;
+          }
+        }
       }
-      next();
+      await next();
     };
   }
 

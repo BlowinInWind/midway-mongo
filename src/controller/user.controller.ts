@@ -19,7 +19,7 @@ export class UserController extends AuthController {
   logger: ILogger;
 
   @Get('/')
-  async getUserLists() {
+  async getUserLists(ctx: Context) {
     this.logger.info('get user');
     this.logger.warn('warning!');
 
