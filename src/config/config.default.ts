@@ -7,6 +7,37 @@ export default {
     port: 7001,
   },
 
+  passport: {
+    session: false,
+  },
+
+  session: {
+    key: 'icsoms_kdbm',
+    maxAge: 24 * 3600 * 1000, // 1天
+    httpOnly: true,
+  },
+
+  redis: {
+    client: {
+      port: 6379, // Redis port
+      host: '127.0.0.1', // Redis host
+      db: 0,
+    },
+  },
+
+  jwt: {
+    secret: 'icsoms_kdbm',
+  },
+
+  // midwayLogger: {
+  //   clients: {
+  //     coreLogger: {
+  //       level: 'warn',
+  //       consoleLevel: 'warn',
+  //     },
+  //   },
+  // },
+
   // mongodb
   mongoose: {
     client: {

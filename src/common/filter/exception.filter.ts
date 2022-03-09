@@ -1,5 +1,5 @@
 import { Catch } from '@midwayjs/decorator';
-import { httpError, MidwayHttpError, HttpStatus } from '@midwayjs/core';
+import { MidwayHttpError, HttpStatus } from '@midwayjs/core';
 import { Context } from '@midwayjs/koa';
 import { ApiException } from '../exceptions';
 import { AjaxResult } from '../class';
