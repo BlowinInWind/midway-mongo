@@ -26,6 +26,7 @@ export default {
   },
 
   jwt: {
+    expiresIn: '1d',
     secret: 'icsoms_kdbm',
   },
 

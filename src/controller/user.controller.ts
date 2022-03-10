@@ -3,8 +3,8 @@ import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
 import { ILogger } from '@midwayjs/logger';
-import { Public } from '../common/decorator';
 import { AuthController } from './auth.controller';
+import { JwtMiddleware } from '../common/middleware';
 
 @Controller('/user')
 export class UserController extends AuthController {
@@ -18,7 +18,7 @@ export class UserController extends AuthController {
   @Inject()
   logger: ILogger;
 
-  @Get('/')
+  @Get('/', { middleware: [JwtMiddleware] })
   async getUserLists(ctx: Context) {
     this.logger.info('get user');
     this.logger.warn('warning!');

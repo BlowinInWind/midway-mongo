@@ -33,7 +33,7 @@ export class ContainerLifeCycle implements ILifeCycle {
 
   async onReady() {
     // add middleware
-    this.app.useMiddleware([AuthMiddleware, ResponseMiddleware]);
+    this.app.useMiddleware([ResponseMiddleware]);
 
     // add filter
     this.app.useFilter([ExceptionFilter]);
