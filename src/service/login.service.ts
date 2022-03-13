@@ -29,25 +29,24 @@ export class LoginService {
       throw new ApiException('请求参数错误');
     }
 
-    const token = await this.utils.jwtSign(
-      {
-        uid: result!._id.toString(),
-        pv: 1,
-      },
-      {
-        expiresIn: '24h',
-      }
-    );
+    // const token = await this.utils.jwtSign(
+    //   {
+    //     uid: result!._id.toString(),
+    //     pv: 1,
+    //   },
+    //   {
+    //     expiresIn: '24h',
+    //   }
+    // );
 
-    await this.redisService.set(
-      `admin:token:${result._id}`,
-      token,
-      'EX',
-      60 * 60 * 24
-    );
+    // await this.redisService.set(
+    //   `admin:token:${result._id}`,
+    //   token,
+    //   'EX',
+    //   60 * 60 * 24
+    // );
 
-    this.ctx.admin = result;
-
-    return { token };
+    // this.ctx.admin = result;
+    return result;
   }
 }

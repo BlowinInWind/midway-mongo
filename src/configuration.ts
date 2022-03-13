@@ -5,10 +5,11 @@ import * as info from '@midwayjs/info';
 import { join } from 'path';
 import * as typegoose from '@midwayjs/typegoose';
 import { ExceptionFilter } from './common/filter';
-import { ResponseMiddleware, AuthMiddleware } from './common/middleware';
+import { ResponseMiddleware, SessionMiddleware } from './common/middleware';
 import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
+import * as passport from '@midwayjs/passport';
 
 @Configuration({
   imports: [
@@ -17,6 +18,7 @@ import * as jwt from '@midwayjs/jwt';
     jwt,
     typegoose,
     validate,
+    passport,
     {
       component: info,
       enabledEnvironment: ['local'],
@@ -33,9 +35,13 @@ export class ContainerLifeCycle implements ILifeCycle {
 
   async onReady() {
     // add middleware
-    this.app.useMiddleware([ResponseMiddleware]);
+    this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
 
     // add filter
     this.app.useFilter([ExceptionFilter]);
   }
+}
+//通过sid生成用于redis保存的key
+function getRedisSessionID(sid) {
+  return `ssid:${sid}`;
 }

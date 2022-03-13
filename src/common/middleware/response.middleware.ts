@@ -16,10 +16,6 @@ export class ResponseMiddleware implements IMiddleware<Context, NextFunction> {
     };
   }
 
-  // ignore(ctx?: Context): boolean {}
-
-  // match(ctx?: Context): boolean {}
-
   static getName(): string {
     return 'response';
   }

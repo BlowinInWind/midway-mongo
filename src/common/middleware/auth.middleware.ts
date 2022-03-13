@@ -5,6 +5,7 @@ import {
   getClassMetadata,
   Inject,
 } from '@midwayjs/decorator';
+import { ExtractJwt } from 'passport-jwt';
 import { NextFunction, Context } from '@midwayjs/koa';
 import { RedisService } from '@midwayjs/redis';
 import { Utils } from '../utils';
@@ -21,7 +22,8 @@ export class AuthMiddleware implements IMiddleware<Context, NextFunction> {
     return async (ctx: Context, next: NextFunction) => {
       const url = ctx.url;
       if (url !== '/login') {
-        const token = ctx.get('Authorization').slice(7);
+        const token = ExtractJwt.fromAuthHeaderAsBearerToken()(ctx.request);
+        // const token = ctx.get('Authorization').slice(7);
         if (!token) {
           ctx.status = 401;
           ctx.body = {

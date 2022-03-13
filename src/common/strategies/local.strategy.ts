@@ -31,15 +31,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     };
   }
 
-  // serializeUser(user, done) {
-  //   // 可以只保存用户id
-  //   done(null, user._id);
-  // }
+  serializeUser(user, done) {
+    // 可以只保存用户id
+    done(null, user._id);
+  }
 
-  // async deserializeUser(id, done) {
-  //   console.log(this);
-  //   // 这里不是异步方法，你可以从其他地方根据用户名，反查用户数据。
-  //   const user = await this.userService.findUserById(id);
-  //   done(null, user);
-  // }
+  async deserializeUser(id, done) {
+    // 这里不是异步方法，你可以从其他地方根据用户名，反查用户数据。
+    done(null, id);
+  }
 }

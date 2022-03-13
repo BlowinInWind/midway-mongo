@@ -8,7 +8,7 @@ export default {
   },
 
   passport: {
-    session: false,
+    session: true,
   },
 
   session: {
