@@ -10,6 +10,8 @@ import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
 import * as passport from '@midwayjs/passport';
+// import * as redisStore from 'koa-redis';
+// import * as session from 'koa-session';
 
 @Configuration({
   imports: [
@@ -34,6 +36,8 @@ export class ContainerLifeCycle implements ILifeCycle {
   allConfig;
 
   async onReady() {
+    // this.app.use(session({ store: redisStore({}) }));
+
     // add middleware
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
 
