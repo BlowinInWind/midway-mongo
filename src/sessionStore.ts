@@ -21,7 +21,10 @@ export default class MongooseStore {
     }
     const updatedAt = { ...schema.updatedAt, expires };
     const { Mongo, Schema } = connection;
-    this.session = Mongo.model(name, new Schema({ ...schema, updatedAt }));
+    this.session = Mongo.model(
+      name,
+      new Schema({ ...schema, updatedAt }, collection)
+    );
   }
 
   async destroy(id) {

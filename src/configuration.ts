@@ -10,8 +10,11 @@ import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
 import * as passport from '@midwayjs/passport';
-// import * as redisStore from 'koa-redis';
-// import * as session from 'koa-session';
+import * as session from 'koa-session';
+import * as mongoose from 'mongoose';
+import SessionStore from './sessionStore';
+
+const db = mongoose.connect('mongodb://localhost/james', {});
 
 @Configuration({
   imports: [
@@ -36,7 +39,16 @@ export class ContainerLifeCycle implements ILifeCycle {
   allConfig;
 
   async onReady() {
-    // this.app.use(session({ store: redisStore({}) }));
+    this.app.use(
+      session({
+        store: new SessionStore({
+          connection: db,
+          expires: 24 * 60 * 60, // 默认时间为1天
+          name: 'session',
+          collection: 'sessions', //数据库集合
+        }),
+      })
+    );
 
     // add middleware
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
