@@ -1,4 +1,5 @@
 import { MidwayConfig } from '@midwayjs/core';
+import { MemorySessionStore } from '../SessionStore';
 
 export default {
   // use for cookie sign key, should change to your own and keep security
@@ -12,6 +13,7 @@ export default {
   },
 
   session: {
+    ContextStore: MemorySessionStore,
     key: 'icsoms_kdbm',
     maxAge: 24 * 3600 * 1000, // 1天
     httpOnly: true,
