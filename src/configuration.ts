@@ -1,4 +1,5 @@
-import { Configuration, App, Config, ALL } from '@midwayjs/decorator';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Configuration, App, Config, ALL, Inject } from '@midwayjs/decorator';
 import * as koa from '@midwayjs/koa';
 import * as validate from '@midwayjs/validate';
 import * as info from '@midwayjs/info';
@@ -10,11 +11,9 @@ import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
 import * as passport from '@midwayjs/passport';
-import * as session from 'koa-session';
-import * as mongoose from 'mongoose';
-import SessionStore from './sessionStore';
-
-const db = mongoose.connect('mongodb://localhost/james', {});
+import * as pass from 'passport';
+import * as session from '@midwayjs/express-session';
+const MongoStore = require('connect-mongo');
 
 @Configuration({
   imports: [
@@ -22,8 +21,10 @@ const db = mongoose.connect('mongodb://localhost/james', {});
     redis,
     jwt,
     typegoose,
-    validate,
     passport,
+    validate,
+    session,
+    // passport,
     {
       component: info,
       enabledEnvironment: ['local'],
@@ -38,17 +39,25 @@ export class ContainerLifeCycle implements ILifeCycle {
   @Config(ALL)
   allConfig;
 
+  @Inject()
+  sessionStoreManager: session.SessionStoreManager;
+
   async onReady() {
-    this.app.use(
-      session({
-        store: new SessionStore({
-          connection: db,
-          expires: 24 * 60 * 60, // 默认时间为1天
-          name: 'session',
-          collection: 'sessions', //数据库集合
-        }),
-      })
+    this.sessionStoreManager.setSessionStore(
+      new MongoStore({
+        mongoUrl: 'mongodb://root:jiangtong911100@120.55.15.68:27017',
+        dbName: 'icsOmsUnicorn',
+        collectionName: 'sessions',
+      }),
+      {
+        checkPeriod: 86400000, // prune expired entries every 24h
+      }
     );
+
+    // @ts-ignore
+    this.app.use(pass.initialize());
+    // passport.initialize();
+    this.app.use(pass.session());
 
     // add middleware
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
@@ -56,8 +65,4 @@ export class ContainerLifeCycle implements ILifeCycle {
     // add filter
     this.app.useFilter([ExceptionFilter]);
   }
-}
-//通过sid生成用于redis保存的key
-function getRedisSessionID(sid) {
-  return `ssid:${sid}`;
 }

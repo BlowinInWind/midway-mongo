@@ -19,9 +19,11 @@ export class UserController extends AuthController {
   logger: ILogger;
 
   @Get('/list')
-  async getUserLists(ctx: Context) {
+  async getUserLists() {
     this.logger.info('get user');
     this.logger.warn('warning!');
+    console.log(this.ctx.cookies.get('user'));
+    console.log(this.ctx.session);
 
     const result = await this.userService.getUserLists();
     return new DataObj(result);

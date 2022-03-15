@@ -1,5 +1,5 @@
-import { prop } from '@typegoose/typegoose';
 import { EntityModel } from '@midwayjs/typegoose';
+import { ModelOptions, prop } from '@typegoose/typegoose';
 
 interface Staff {
   name?: string;
@@ -7,6 +7,7 @@ interface Staff {
 }
 
 @EntityModel()
+@ModelOptions({ schemaOptions: { collection: 'users', timestamps: true } })
 export class User {
   // 用户名
   @prop({
