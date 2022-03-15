@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post, Session } from '@midwayjs/decorator';
+import { Body, Controller, Inject, Post } from '@midwayjs/decorator';
 import { LoginService } from '../service/login.service';
 import { DataObj } from '../common/class/data-obj.class';
 import { LocalPassportMiddleware } from '../common/middleware';

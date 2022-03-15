@@ -9,8 +9,8 @@ export class SessionMiddleware implements IMiddleware<Context, NextFunction> {
     return async (ctx: Context, next: NextFunction) => {
       console.log(ctx.cookies);
       console.log(ctx.cookies.get('icsoms_kdbm'));
-      // if (ctx.isAuthenticated()) {
-      if (ctx.cookies.get('icsoms_kdbm')) {
+      if (ctx.isAuthenticated()) {
+        // if (ctx.cookies.get('icsoms_kdbm')) {
         await next();
       } else {
         throw new ForbiddenError();

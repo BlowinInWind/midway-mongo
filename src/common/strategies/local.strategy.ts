@@ -33,7 +33,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   serializeUser(user, done) {
     // 可以只保存用户id
-    done(null, user._id);
+    user && done(null, user.username);
   }
 
   async deserializeUser(id, done) {

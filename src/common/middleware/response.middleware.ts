@@ -7,7 +7,6 @@ import { AjaxResult } from '../class';
 export class ResponseMiddleware implements IMiddleware<Context, NextFunction> {
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
-      ctx.state.user = { id: 1111 };
       // 执行下一个 Web 中间件，最后执行到控制器
       // 这里可以拿到下一个中间件或者控制器的返回值
       const result = await next();

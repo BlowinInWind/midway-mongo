@@ -5,6 +5,7 @@ import { DataObj } from '../common/class';
 import { ILogger } from '@midwayjs/logger';
 import { AuthController } from './auth.controller';
 // import { JwtMiddleware } from '../common/middleware';
+import { MemorySessionStore } from '../SessionStore';
 
 @Controller('/user')
 export class UserController extends AuthController {
@@ -18,12 +19,16 @@ export class UserController extends AuthController {
   @Inject()
   logger: ILogger;
 
+  @Inject()
+  memoryStore: MemorySessionStore;
+
   @Get('/list')
   async getUserLists() {
     this.logger.info('get user');
     this.logger.warn('warning!');
     console.log(this.ctx.cookies.get('user'));
     console.log(this.ctx.session);
+    console.log(this.memoryStore);
 
     const result = await this.userService.getUserLists();
     return new DataObj(result);

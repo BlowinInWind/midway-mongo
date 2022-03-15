@@ -29,8 +29,9 @@ export class LoginService {
       throw new ApiException('请求参数错误');
     }
 
-    this.ctx.state.user = result;
-    this.ctx.session.user = result;
+    this.ctx.login();
+    // this.ctx.state.user = result;
+    // this.ctx.session.user = result;
     // this.ctx.cookies.set('user', JSON.stringify(result), { httpOnly: false });
 
     // const token = await this.utils.jwtSign(

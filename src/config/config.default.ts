@@ -12,14 +12,9 @@ export default {
   },
 
   session: {
-    name: 'icsoms_kdbm',
-    cookie: {
-      maxAge: 24 * 3600 * 1000, // ms
-      httpOnly: true,
-    },
-    // key: 'icsoms_kdbm',
-    // maxAge: 24 * 3600 * 1000, // 1天
-    // httpOnly: true,
+    key: 'icsoms_kdbm',
+    maxAge: 24 * 3600 * 1000, // 1天
+    httpOnly: true,
   },
 
   redis: {

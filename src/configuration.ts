@@ -10,10 +10,11 @@ import { ResponseMiddleware, SessionMiddleware } from './common/middleware';
 import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
+import * as mongoose from 'mongoose';
 import * as passport from '@midwayjs/passport';
-import * as pass from 'passport';
-import * as session from '@midwayjs/express-session';
-const MongoStore = require('connect-mongo');
+import * as session from '@midwayjs/session';
+// import { SessionStoreManager } from '@midwayjs/session';
+// import { MemorySessionStore } from './SessionStore';
 
 @Configuration({
   imports: [
@@ -23,8 +24,6 @@ const MongoStore = require('connect-mongo');
     typegoose,
     passport,
     validate,
-    session,
-    // passport,
     {
       component: info,
       enabledEnvironment: ['local'],
@@ -39,25 +38,20 @@ export class ContainerLifeCycle implements ILifeCycle {
   @Config(ALL)
   allConfig;
 
-  @Inject()
-  sessionStoreManager: session.SessionStoreManager;
+  // @Inject()
+  // sessionStoreManager: SessionStoreManager;
+
+  // @Inject()
+  // memoryStore: MemorySessionStore;
 
   async onReady() {
-    this.sessionStoreManager.setSessionStore(
-      new MongoStore({
-        mongoUrl: 'mongodb://root:jiangtong911100@120.55.15.68:27017',
-        dbName: 'icsOmsUnicorn',
-        collectionName: 'sessions',
-      }),
-      {
-        checkPeriod: 86400000, // prune expired entries every 24h
-      }
-    );
+    const db = await mongoose.connect('mongodb://120.55.15.68:27017', {
+      user: 'root',
+      pass: 'jiangtong911100',
+      dbName: 'icsOmsUnicorn',
+    });
 
-    // @ts-ignore
-    this.app.use(pass.initialize());
-    // passport.initialize();
-    this.app.use(pass.session());
+    // this.sessionStoreManager.setSessionStore(this.memoryStore);
 
     // add middleware
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
