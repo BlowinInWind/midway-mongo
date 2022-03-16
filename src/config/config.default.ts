@@ -1,5 +1,4 @@
 import { MidwayConfig } from '@midwayjs/core';
-import { MemorySessionStore } from '../SessionStore';
 
 export default {
   // use for cookie sign key, should change to your own and keep security
