@@ -1,10 +1,9 @@
-import { Inject, Controller, Get, Query } from '@midwayjs/decorator';
+import { Inject, Controller, Get, Query, Session } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
 import { ILogger } from '@midwayjs/logger';
 import { AuthController } from './auth.controller';
-// import { JwtMiddleware } from '../common/middleware';
 
 @Controller('/user')
 export class UserController extends AuthController {
@@ -19,13 +18,15 @@ export class UserController extends AuthController {
   logger: ILogger;
 
   @Get('/list')
-  async getUserLists() {
+  async getUserLists(@Session() session) {
     this.logger.info('get user');
     this.logger.warn('warning!');
     console.log(this.ctx.cookies.get('user'));
     console.log(this.ctx.session);
+    console.log(session);
 
     const result = await this.userService.getUserLists();
+
     return new DataObj(result);
   }
 }

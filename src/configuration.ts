@@ -12,8 +12,9 @@ import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
 import * as passport from '@midwayjs/passport';
 import * as pass from 'passport';
-import * as session from '@midwayjs/express-session';
-const MongoStore = require('connect-mongo');
+import * as session from '@midwayjs/session';
+import { MongoStore } from './MongoStore';
+// const MongoStore = require('connect-mongo');
 
 @Configuration({
   imports: [
@@ -42,17 +43,11 @@ export class ContainerLifeCycle implements ILifeCycle {
   @Inject()
   sessionStoreManager: session.SessionStoreManager;
 
+  @Inject()
+  mongoStore: MongoStore;
+
   async onReady() {
-    this.sessionStoreManager.setSessionStore(
-      new MongoStore({
-        mongoUrl: 'mongodb://root:jiangtong911100@120.55.15.68:27017',
-        dbName: 'icsOmsUnicorn',
-        collectionName: 'sessions',
-      }),
-      {
-        checkPeriod: 86400000, // prune expired entries every 24h
-      }
-    );
+    this.sessionStoreManager.setSessionStore(this.mongoStore);
 
     // @ts-ignore
     this.app.use(pass.initialize());

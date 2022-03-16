@@ -7,10 +7,12 @@ import { ForbiddenError } from '@midwayjs/core/dist/error/http';
 export class SessionMiddleware implements IMiddleware<Context, NextFunction> {
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
-      console.log(ctx.cookies);
-      console.log(ctx.cookies.get('icsoms_kdbm'));
-      // if (ctx.isAuthenticated()) {
-      if (ctx.cookies.get('icsoms_kdbm')) {
+      // console.log(ctx.cookies);
+      // console.log(ctx.session.user);
+      console.log(ctx.cookies.get('user'));
+      // // if (ctx.isAuthenticated()) {
+      // if (ctx.cookies.get('icsoms_kdbm')) {
+      if (ctx.session.user) {
         await next();
       } else {
         throw new ForbiddenError();
