@@ -16,7 +16,6 @@
     "@midwayjs/session": "^3.1.2",
     "@midwayjs/typegoose": "^3.1.0",
     "@midwayjs/validate": "^3.0.0",
-    "connect-mongo": "^4.6.0",
     "ioredis": "^4.28.5",
     "jsonwebtoken": "^8.5.1",
     "kruptein": "^3.0.3",

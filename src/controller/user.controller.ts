@@ -4,6 +4,7 @@ import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
 import { ILogger } from '@midwayjs/logger';
 import { AuthController } from './auth.controller';
+import { MongoStore } from '../MongoStore';
 
 @Controller('/user')
 export class UserController extends AuthController {
@@ -16,6 +17,9 @@ export class UserController extends AuthController {
 
   @Inject()
   logger: ILogger;
+
+  @Inject()
+  mongoStore: MongoStore;
 
   @Get('/list')
   async getUserLists(@Session() session) {
