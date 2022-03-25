@@ -147,9 +147,6 @@ export class MongoStore extends SessionStore {
   async set(sid, session) {
     let _a: Record<string, any>;
     try {
-      if (session === null) {
-        delete session.lastModified;
-      }
       const s: {
         _id: string;
         session: any;
@@ -199,6 +196,10 @@ export class MongoStore extends SessionStore {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async clear() {
+    await this.collectionMaster.then(collection => collection.drop());
   }
 
   // async get(key) {

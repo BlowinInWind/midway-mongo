@@ -12,6 +12,7 @@ import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
 import * as passport from '@midwayjs/passport';
 import * as session from '@midwayjs/session';
+import * as swagger from '@midwayjs/swagger';
 // import { SessionStoreManager } from '@midwayjs/session';
 import { MongoStore } from './MongoStore';
 
@@ -24,6 +25,7 @@ import { MongoStore } from './MongoStore';
     typegoose,
     passport,
     validate,
+    swagger,
     {
       component: info,
       enabledEnvironment: ['local'],
@@ -38,14 +40,14 @@ export class ContainerLifeCycle implements ILifeCycle {
   @Config(ALL)
   allConfig;
 
-  @Inject()
-  sessionStoreManager: session.SessionStoreManager;
+  // @Inject()
+  // sessionStoreManager: session.SessionStoreManager;
 
-  @Inject()
-  mongoStore: MongoStore;
+  // @Inject()
+  // mongoStore: MongoStore;
 
   async onReady() {
-    this.sessionStoreManager.setSessionStore(this.mongoStore);
+    // this.sessionStoreManager.setSessionStore(this.mongoStore);
 
     // this.sessionStoreManager.setSessionStore(this.memoryStore);
 
@@ -53,6 +55,6 @@ export class ContainerLifeCycle implements ILifeCycle {
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
 
     // add filter
-    this.app.useFilter([ExceptionFilter]);
+    // this.app.useFilter([ExceptionFilter]);
   }
 }

@@ -12,21 +12,21 @@ export class LoginController {
   @Inject()
   ctx: Context;
 
-  @Inject()
-  mongoStore: MongoStore;
+  // @Inject()
+  // mongoStore: MongoStore;
 
   @Post('', { middleware: [LocalPassportMiddleware] })
   async login(@Body() loginDto: any, @Session() session) {
-    this.ctx.cookies.set('user', '11');
+    // this.ctx.cookies.set('user', '11');
     const result = await this.loginService.login(loginDto);
-    // session.user = result;
-
+    session.user = result;
+    // this.ctx.login();
     return DataObj.create(result);
   }
 
   @Post('/out')
   async loginout(@Body() loginDto: any) {
-    this.mongoStore.destroy(this.ctx.session._externalKey);
+    // this.mongoStore.destroy(this.ctx.session._externalKey);
     return { msg: 'success' };
   }
 }

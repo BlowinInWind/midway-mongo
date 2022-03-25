@@ -8,14 +8,14 @@ export default {
   },
 
   passport: {
-    session: true,
+    session: false,
   },
 
   session: {
     maxAge: 86400000, // ms
     key: 'icsoms_kdbm',
     httpOnly: true,
-    encrypt: true,
+    // encrypt: true,
     // sameSite: null,
     logValue: true,
   },
