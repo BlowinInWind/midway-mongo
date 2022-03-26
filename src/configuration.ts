@@ -14,7 +14,6 @@ import * as mongoose from 'mongoose';
 import * as passport from '@midwayjs/passport';
 import * as session from '@midwayjs/session';
 // import { SessionStoreManager } from '@midwayjs/session';
-// import { MemorySessionStore } from './SessionStore';
 
 @Configuration({
   imports: [
