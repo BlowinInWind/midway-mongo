@@ -2,7 +2,6 @@ import { Inject, Controller, Get, Session } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
-import { ILogger } from '@midwayjs/logger';
 import { fnMiddleware } from '../common/middleware/route.middleware';
 
 @Controller('/user')
@@ -13,9 +12,6 @@ export class UserController {
 
   @Inject()
   userService: UserService;
-
-  @Inject()
-  logger: ILogger;
 
   // @Inject()
   // mongoStore: MongoStore;

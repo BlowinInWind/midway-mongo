@@ -1,3 +1,4 @@
+/* eslint-disable node/no-extraneous-import */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Configuration, App, Config, ALL, Inject } from '@midwayjs/decorator';
 import * as koa from '@midwayjs/koa';
@@ -21,7 +22,6 @@ import { MongoStore } from './MongoStore';
     koa,
     redis,
     jwt,
-    session,
     typegoose,
     passport,
     validate,
@@ -40,14 +40,14 @@ export class ContainerLifeCycle implements ILifeCycle {
   @Config(ALL)
   allConfig;
 
-  // @Inject()
-  // sessionStoreManager: session.SessionStoreManager;
+  @Inject()
+  sessionStoreManager: session.SessionStoreManager;
 
-  // @Inject()
-  // mongoStore: MongoStore;
+  @Inject()
+  mongoStore: MongoStore;
 
   async onReady() {
-    // this.sessionStoreManager.setSessionStore(this.mongoStore);
+    this.sessionStoreManager.setSessionStore(this.mongoStore);
 
     // this.sessionStoreManager.setSessionStore(this.memoryStore);
 
