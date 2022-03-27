@@ -1,5 +1,6 @@
 import { EntityModel } from '@midwayjs/typegoose';
 import { ModelOptions, prop } from '@typegoose/typegoose';
+import { ApiProperty } from '@midwayjs/swagger';
 
 interface Staff {
   name?: string;
@@ -15,6 +16,7 @@ export class User {
     required: true,
     unique: true,
   })
+  @ApiProperty({ example: 'Kitty', description: 'The name of the Catname' })
   username: string;
 
   // 密码

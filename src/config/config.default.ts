@@ -1,5 +1,4 @@
 import { MidwayConfig } from '@midwayjs/core';
-import { MemorySessionStore } from '../SessionStore';
 
 export default {
   // use for cookie sign key, should change to your own and keep security
@@ -9,14 +8,16 @@ export default {
   },
 
   passport: {
-    session: true,
+    session: false,
   },
 
   session: {
-    ContextStore: MemorySessionStore,
+    maxAge: 86400000, // ms
     key: 'icsoms_kdbm',
-    maxAge: 24 * 3600 * 1000, // 1天
     httpOnly: true,
+    // encrypt: true,
+    // sameSite: null,
+    logValue: true,
   },
 
   redis: {

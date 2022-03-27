@@ -1,14 +1,12 @@
-import { Inject, Controller, Get, Query } from '@midwayjs/decorator';
+import { Inject, Controller, Get, Session } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
 import { ILogger } from '@midwayjs/logger';
-import { AuthController } from './auth.controller';
-// import { JwtMiddleware } from '../common/middleware';
-import { MemorySessionStore } from '../SessionStore';
+import { fnMiddleware } from '../common/middleware/route.middleware';
 
 @Controller('/user')
-export class UserController extends AuthController {
+export class UserController {
   @Inject()
   // 1、在依赖注入容器中，找到对应的属性名，并赋值为对应的实例化对象
   ctx: Context;
@@ -19,18 +17,20 @@ export class UserController extends AuthController {
   @Inject()
   logger: ILogger;
 
-  @Inject()
-  memoryStore: MemorySessionStore;
+  // @Inject()
+  // mongoStore: MongoStore;
 
-  @Get('/list')
-  async getUserLists() {
-    this.logger.info('get user');
-    this.logger.warn('warning!');
-    console.log(this.ctx.cookies.get('user'));
-    console.log(this.ctx.session);
-    console.log(this.memoryStore);
+  @Get('/list', { middleware: [fnMiddleware('1')] })
+  async getUserLists(@Session() session) {
+    // this.logger.info('get user');
+    // this.logger.warn('warning!');
+    // this.logger.info('session!', session);
+    await this.ctx.cookies.set('foo', 'bar', { encrypt: true });
+    // get cookie
+    // console.log(this.ctx.cookies.get('foo', { encrypt: true }));
 
-    const result = await this.userService.getUserLists();
-    return new DataObj(result);
+    return new DataObj({
+      cookie: this.ctx.cookies.get('icsoms_kdbm'),
+    });
   }
 }

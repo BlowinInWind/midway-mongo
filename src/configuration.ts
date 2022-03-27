@@ -10,19 +10,22 @@ import { ResponseMiddleware, SessionMiddleware } from './common/middleware';
 import { ILifeCycle } from '@midwayjs/core';
 import * as redis from '@midwayjs/redis';
 import * as jwt from '@midwayjs/jwt';
-import * as mongoose from 'mongoose';
 import * as passport from '@midwayjs/passport';
 import * as session from '@midwayjs/session';
+import * as swagger from '@midwayjs/swagger';
 // import { SessionStoreManager } from '@midwayjs/session';
+import { MongoStore } from './MongoStore';
 
 @Configuration({
   imports: [
     koa,
     redis,
     jwt,
+    session,
     typegoose,
     passport,
     validate,
+    swagger,
     {
       component: info,
       enabledEnvironment: ['local'],
@@ -38,17 +41,13 @@ export class ContainerLifeCycle implements ILifeCycle {
   allConfig;
 
   // @Inject()
-  // sessionStoreManager: SessionStoreManager;
+  // sessionStoreManager: session.SessionStoreManager;
 
   // @Inject()
-  // memoryStore: MemorySessionStore;
+  // mongoStore: MongoStore;
 
   async onReady() {
-    const db = await mongoose.connect('mongodb://120.55.15.68:27017', {
-      user: 'root',
-      pass: 'jiangtong911100',
-      dbName: 'icsOmsUnicorn',
-    });
+    // this.sessionStoreManager.setSessionStore(this.mongoStore);
 
     // this.sessionStoreManager.setSessionStore(this.memoryStore);
 
@@ -56,6 +55,6 @@ export class ContainerLifeCycle implements ILifeCycle {
     this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
 
     // add filter
-    this.app.useFilter([ExceptionFilter]);
+    // this.app.useFilter([ExceptionFilter]);
   }
 }

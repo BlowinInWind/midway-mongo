@@ -1,3 +1,4 @@
+import { Context, NextFunction } from '@midwayjs/koa';
 import { Middleware } from '@midwayjs/decorator';
 import { PassportMiddleware } from '@midwayjs/passport';
 import { AuthenticateOptions } from 'passport';
