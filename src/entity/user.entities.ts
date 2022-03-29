@@ -1,6 +1,7 @@
 import { EntityModel } from '@midwayjs/typegoose';
-import { ModelOptions, prop } from '@typegoose/typegoose';
+import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
 import { ApiProperty } from '@midwayjs/swagger';
+import { Group } from './group.entities';
 
 interface Staff {
   name?: string;
@@ -8,7 +9,10 @@ interface Staff {
 }
 
 @EntityModel()
-@ModelOptions({ schemaOptions: { collection: 'users', timestamps: true } })
+@ModelOptions({
+  schemaOptions: { collection: 'users' },
+  // options: { customName: 'users' },
+})
 export class User {
   // 用户名
   @prop({
@@ -43,4 +47,10 @@ export class User {
   isInitial?: boolean;
 
   staff: Staff;
+
+  @prop({ ref: () => Group })
+  userGroups?: Ref<Group>[];
+
+  @prop({ ref: () => Group })
+  sss?: Ref<Group>[];
 }

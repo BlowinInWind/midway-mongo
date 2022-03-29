@@ -2,6 +2,7 @@ import { Provide, Scope, ScopeEnum } from '@midwayjs/decorator';
 import { InjectEntityModel } from '@midwayjs/typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { ApiException } from '../common/exceptions';
+import { Group } from '../entity/group.entities';
 import { User } from '../entity/user.entities';
 
 @Provide()
@@ -11,6 +12,9 @@ import { User } from '../entity/user.entities';
 export class UserService {
   @InjectEntityModel(User)
   userModel: ReturnModelType<typeof User>;
+
+  @InjectEntityModel(Group)
+  groupModel: ReturnModelType<typeof Group>;
 
   // 获取用户列表
   async getUserLists() {
@@ -24,10 +28,16 @@ export class UserService {
 
   // 根据id获取用户名
   async findUserById(id): Promise<User> {
-    const result = await this.userModel.findOne({ _id: id }).lean();
+    const result = await this.userModel
+      .findOne({ _id: id })
+      .populate('sss userGroups')
+      .lean();
     if (!result) {
       throw new ApiException('请求参数错误');
     }
+
+    // const result = await this.groupModel.find({}).lean().exec();
+
     return result;
   }
 }

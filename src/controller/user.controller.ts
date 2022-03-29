@@ -1,4 +1,4 @@
-import { Inject, Controller, Get, Session } from '@midwayjs/decorator';
+import { Inject, Controller, Get, Session, Param } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
 import { DataObj } from '../common/class';
@@ -28,5 +28,10 @@ export class UserController {
     return new DataObj({
       cookie: this.ctx.cookies.get('icsoms_kdbm'),
     });
+  }
+
+  @Get('/list/:id')
+  async getUser(@Param('id') id: string) {
+    return await this.userService.findUserById(id);
   }
 }

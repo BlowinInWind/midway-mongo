@@ -52,7 +52,8 @@ export class ContainerLifeCycle implements ILifeCycle {
     // this.sessionStoreManager.setSessionStore(this.memoryStore);
 
     // add middleware
-    this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
+    this.app.useMiddleware([ResponseMiddleware]);
+    // this.app.useMiddleware([SessionMiddleware, ResponseMiddleware]);
 
     // add filter
     // this.app.useFilter([ExceptionFilter]);
